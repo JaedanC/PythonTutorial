@@ -1,0 +1,3 @@
+Level:1
+Enemies:15
+Pickups:potions,gear,weapons
