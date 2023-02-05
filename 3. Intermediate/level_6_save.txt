@@ -1,3 +1,0 @@
-Level:6
-Enemies:15
-Pickups:potions,gear,weapons
