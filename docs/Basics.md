@@ -219,7 +219,11 @@ What is your favourite colour? Blue
 Blue is a nice colour
 ```
 
-**Note:** The 'Blue' above is written by the user.
+:::note
+
+The text 'Blue' above is written by the user.
+
+:::
 
 This challenge makes use of *variables*, *user input* and basic *string formatting*.
 
@@ -362,7 +366,7 @@ Loops alow you to repeat execution of a certain code block. There are two keywor
 
     Index 0 is the first element in python and in most other programming languages.
 
-- For loops work slightly differently. Instead of stopping until the condition evaluates to True, they instead try to *unpack* the object and will automatically iterate over something that can be unpacked. For loops are what we use the majority of the time instead of while loops. The above example can be simply rewritten using a for loop like below:
+- For loops work slightly differently. Instead of stopping until the condition evaluates to True, they instead try to iterate the object, storing the instance it finds in a variable. For loops are what we use the majority of the time instead of while loops. The above example can be simply rewritten using a for loop like below:
 
     ```python
     fruits = ["apple", "mango", "banana"]
@@ -438,7 +442,11 @@ while True:
     i += 1
 ```
 
+:::caution
+
 This code will continue to run forever, printing out a counter that increases. The only way to kill the program is by pressing CTRL+C on your keyboard while the program is running. CTRL+C sends Python a KeyboardInterrupt that will crash the program (safely but) fairly ungracefully.
+
+:::
 
 A common example of while True loops are around user input. If I want to ask the user for input continuously, I can use a while True loop. Consider below:
 
@@ -454,7 +462,7 @@ while True:
 
 Only until the user inputs nothing does the program finish. Or until the user press CTRL+C as we discussed before.
 
-### Task
+### Task: Evens
 
 Using the scaffhold below, write a program that iterates over the list of integers and only prints the integers that are even. Try to do this task using **for** loops.
 
@@ -472,7 +480,11 @@ $ python even.py
 6542
 ```
 
-*Hint:* The modulo operator (%) is great for this
+:::tip Hint
+
+The modulo operator `%` is great for this
+
+:::
 
 ### Task: Fizzbuzz
 
@@ -527,7 +539,7 @@ In this example, the program `game.py` is run with two arguments, "hello" and "w
 
 For some reason in Python, command-line arguments are stored inside a variable in python called `sys.argv` (short for system argument variables). `sys.argv` is a list containing all the arguments as strings. To access sys.argv we first need to input the `sys` module. By convention, importing modules usually goes at the top of the file. For example:
 
-```python
+```python title=arguments.py
 import sys
 
 print(len(sys.argv)) # Prints the number of arguments
@@ -792,7 +804,13 @@ first_name = name_list[0]
 last_name = name_list[1]
 ```
 
-The `.split()` *method* (This is not a function, but for this tutorial wherever I use the term method just assume for now function), will split the string in two and return a list. We can then grab specific elements from the string.
+The `.split()` *method* will split the string in two and return a list. We can then grab specific elements from the string.
+
+:::info Methods and Functions
+
+You may have noticed at this point that sometimes we call a function directly like `print()` but other times we call a function on an object itself like `thing.split()`. The latter is technically not a function, but rather a *method*. Until I explicitly talk about *methods* it is safe to assume that *methods* and *functions* are effectively the same.
+
+:::
 
 ### IndexError
 
@@ -810,9 +828,13 @@ fruits = ["apple", "mango", "banana"]
 banana = fruits[3]
 ```
 
-The above would error. Can you see why? The programmer was off-by-one.
+The above would error. Can you see why? The programmer was [off-by-one](https://en.wikipedia.org/wiki/Off-by-one_error).
 
-The index can also be a variable as long as the variable is storing an integer.
+:::tip
+
+The index can also be a variable if the variable is an integer.
+
+:::
 
 ### Task
 
@@ -830,7 +852,7 @@ assert sum_first_and_last([9, 6, 3, -1]) == 8
 assert sum_first_and_last([0.5, 0.5]) == 1
 ```
 
-If correct the code should not error.
+If correct, the code should not error.
 
 ## Exceptions
 
@@ -842,7 +864,7 @@ Exceptions or Errors in Python occur when something happens that Python doesn't 
 - ValueError
 - FileNotFoundError
 
-It doesn't take much to trigger an error. Some errors are unrecoverable fullstop (Syntax Errors -> You just suck at coding and Python doesn't know how to interpret what you wrote). But most other errors can be recovered from as long as you as the coder anticipate them, and provide it with some steps to take if an error occurs. This can be done using the **try** and **except** block in Python.
+It doesn't take much to trigger an error. Some errors are unrecoverable fullstop (Syntax Errors -> You wrote invalid Python code and Python doesn't know how to interpret what you wrote). But most other errors can be recovered from as long as you as the coder anticipate them, and provide it with some steps to take if an error occurs. This can be done using the **try** and **except** block in Python.
 
 ### Try/Except
 
@@ -860,7 +882,7 @@ Traceback (most recent call last):
 ZeroDivisionError: division by zero
 ```
 
-It didn't get to print "Hello".
+It didn't get to print "Hello" because a ZeroDivisionError was raised.
 
 Now us as the programmer may want this to happen so that we can go and find the bug that is causing the divisor to be zero, but sometimes we don't. And so we may choose to ignore the error by *catching* or *excepting* if the error is raised. Consider the following:
 
@@ -906,11 +928,23 @@ print(number)
 
 This code will continue to ask for user input until it finally finds some valid input and is allowed to run the **break**, leaving the while True loop.
 
+:::tip
+
+Sometimes letting an error be thrown is better than catching it because some errors we can't recover from. A `FileNotFoundError` when trying to open a file may be a good example.
+
+:::
+
+:::info
+
+Later the idea of "The Stack" is introduced. What happens when an error is raised is that the stack is continously popped until a try/except block is found. If it can't find one, the program crashes.
+
+:::
+
 ### KeyboardInterrupt
 
-This is a unique error that is raised when the user presses CTRL+C on their keyboard. We used it earlier to leave an infinite while True loop. But, like most other errors, this can be caught using a try/except block. This can be a useful tool for cancelling very large jobs.
+There are many kinds of Errors in Python. This is one of them. This unique error that is raised when the user presses CTRL+C on their keyboard. We used it earlier to leave an infinite while True loop. But, like most other errors, this can be caught using a try/except block. This can be a useful tool for cancelling very large jobs, but while still exiting the program gracefully (without crashing).
 
-### Warning
+:::caution
 
 This presents a dangerous situation where a coder might decide to catch a KeyboardInterrupt and place them back into the while True loop. Consider:
 
@@ -924,7 +958,9 @@ while True:
         pass
 ```
 
-If you want to, you can run this program. But without closing the terminal entirely it is extremely hard to stop execution of this program. You would essentially need to press CTRL+C twice SUPER fast. The first would be caught by the try block, and the second must happen while inside the except block. If you could get the second one to run exactly while inside the except block, the second KeyboardInterrupt would not be caught and would crash the program. But this code is effectively impossible to crash without completely killing the process externally via the operating system by closing the terminal.
+If you want to, you can run this program. But without closing the terminal entirely it is extremely hard to stop execution of this program. You would essentially need to press CTRL+C twice SUPER fast. The first would be caught by the try block, and the second must happen while inside the except block. If you could get the second one to run exactly while inside the except block, the second KeyboardInterrupt would not be caught and would crash the program. But, this code is effectively impossible to crash without completely killing the process externally via the operating system by closing the terminal.
+
+:::
 
 ### Task: User Division
 

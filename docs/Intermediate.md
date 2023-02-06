@@ -98,7 +98,11 @@ Cool, we now have a list whose elements are each a line from the file as a strin
 
 This is where the example above diverges. In a real world scenario, what you want to do with the file will vary wildly. In this example though, we'll go over what it *may* look like to read a csv.
 
-And so it is important to note that in this example that python has a built-in module called `csv` that will do all this stuff for us, but for demonstrative purposes let's ignore that module.
+:::info
+
+Python has a built-in module called `csv` that will do all this stuff for us, but for demonstrative purposes let's ignore that module.
+
+:::
 
 Let's say I wanted to print what Gary's age was. How would I do that? Well let's break down the steps in english first, before trying to tackle it in python:
 
@@ -122,13 +126,17 @@ for line in lines:
 47
 ```
 
-**Note:** Reading csvs like this is really bad practice because strings are allowed to contain the "," character as long as they are enclosed in quotes. This is why the csv module exists so that us programmers don't need to reinvent the wheel.
+:::caution
 
-This is only one example of working with files. Sometimes we will need to parse and validate the information inside a file. Sometimes the file format is consistent, other times it isn't and so we have to use our savvy skills of try/except blocks to extract the information we desire. Working with files requires a unique approach each time, but this is why knowing the fundamentals is key first.
+Reading csvs like this is really bad practice because strings are allowed to contain the "," character as long as they are enclosed in quotes. This is why the `csv` module exists so that us programmers don't need to reinvent the wheel. But I digress, this is merely a demonstration.
+
+:::
+
+This is only one example of working with files. Sometimes we will need to parse and validate the information inside a file. Sometimes the file format is consistent, other times it isn't and so we have to use our savvy skills of try/except blocks to extract the information we desire. Working with files requires a unique approach each time, but this is why knowing the fundamentals first is key.
 
 ### Writing to files
 
-Writing to a file is usually done using the `f.write()` method instead of `f.read()`. But we also need to tell python when we open the file that we intend to write to it.
+Writing to a file is usually done using the `f.write()` method instead of `f.read()`. But, we also need to tell Python when we open the file that we intend to write to it.
 
 ```python
 with open("new_file.txt", "w") as f:
@@ -221,7 +229,11 @@ Remember to use the `.split()` method.
 
 ### Task: Writing Levels
 
-**Note:** Feel free to read the dictionaries section before trying this task.
+:::note
+
+Feel free to read the dictionaries section before trying this task.
+
+:::
 
 Write a function that takes in a level state and then writes that to a file. The level is saved as a dictionary like below. The format of the file should match that of the challenge above. The only thing extra to note here is that you must also take in the name of the file to write to.
 
@@ -247,7 +259,7 @@ The `.join()` can be useful for this task.
 
 ## Dictionaries
 
-Dictionaries are another *type* that we haven't looked at yet. They are similar but different to lists. Similar in that they can hold multiple values but different in how they are stored and accessed. Dictionaries very closely relate to json if you are familiar with the file format.
+Dictionaries are another *type* that we haven't looked at yet. They are similar but different to lists. Similar in that they can hold multiple values but different in how they are stored and accessed. Dictionaries very closely relate to [json](https://en.wikipedia.org/wiki/JSON) if you are familiar with the file format.
 
 Dictionaries store a *value* at a specific *key*. These are usually called *key*, *value* pairs. To create a dictionary we use the curly braces `{}`.
 
@@ -289,7 +301,13 @@ person = {
 }
 ```
 
-You now have labels attached to each of these pieces of data. And so it makes accessing this information later much easier as you don't need to know the order of the dictionary (unlike a list). You only need to know the keys making your code more readable. Compare the two.
+:::info
+
+Above is an example of a static declartion of a dictionary -> essentially I create a dictionary with stuff inside it already.
+
+:::
+
+You now have labels attached to each of these pieces of data. This makes retrieving the information later easier because you don't need to know the order of the dictionary (unlike a list). You only need to know the keys making your code more readable. Compare the two:
 
 ```python
 # Old way
@@ -305,7 +323,7 @@ os = person["operating_system"]
 number = person["favourite_number"]
 ```
 
-The second way is much more readible. The second is also much better for semi-unstructed data.
+The second way is much more readible. The second is also much better for semi-unstructured data.
 
 And so finally I'll note that with our information about lists and dictionaries, there's actually nothing stopping us from nesting dictionaries inside dictionaries and lists and vice versa. Let's look at a larger example.
 
@@ -465,7 +483,7 @@ vector = (5, 10, 15)
 x, y, z = vector
 ```
 
-Well, actually we can. Above is valid python code. What's going on here is quite magical. Python is implicitly looping through vector and trying to assign all the elements in it to a variable on the left. What's crucial to understand here is that there is no such thing as *partial* unpacking. If you tried to write:
+Well, actually we can. Above is valid python code. What's going on here is quite magical. Python is implicitly looping through the `vector` tuple (which is iterable) and trying to assign all the elements in it to a variable on the left. What's crucial to understand here is that there is no such thing as *partial* unpacking. If you tried to write:
 
 ```python
 x, y = vector
@@ -473,11 +491,11 @@ x, y = vector
 
 ```bash
 Traceback (most recent call last):
-  File "<stdin>", line 1, in <module>                                 im': 'value'}
+  File "<stdin>", line 1, in <module>
 ValueError: too many values to unpack (expected 2)
 ```
 
-As you can see it errors because it found 3 items to unpack but you only gave it two variable to unpack to. Typically, if this is actually something you want to do, most people just use `_` as a placeholder to say that you are not meaning to use it. `_` is not special, it's just a variable like any other. But, by convention it means we won't use it.
+As you can see it errors because it found 3 items to unpack but you only gave it 2 variable to unpack into. Typically, if this is actually something you want to do, most people just use `_` as a placeholder to say that it is unused. `_` is not special, it's just a variable like any other. But, by convention it means we won't use it.
 
 ```python
 vector = (5, 10, 15)
@@ -492,11 +510,79 @@ print(x * y)
 Some built-in functions in Python return tuples and we can leverage this to our advantage. The most popular function that does this is `enumerate()`. This function works a little bit like `range()` in that it can be looped over, but what makes enumerate so good is that it can replace code that looks like this:
 
 ```python
+# First example
 fruits = ["Apple", "Banana", "Mango"]
 i = 0
+for fruit in fruits:
+    print(i, fruit)
+    i += 1
+
+# Second example
+fruits = ["Apple", "Banana", "Mango"]
+i = 0
+while i < len(fruits):
+    fruit = fruits[i]
+    print(i, fruit)
+    i += 1
 ```
 
-*Todo*
+With:
+
+```python
+for i, fruit in enumerate(fruits):
+    print(i, fruit)
+```
+
+What's going on here is that the enumerate function is returning a tuple: `(0, "Apple")` and then inside the for loop itself we are unpacking the number and the fruit into their own variables. This can make for some very clean code.
+
+Finally, I'll go over one more in-built function, `zip()`. This confusingly named function takes in two iterables and returns them in pairs.
+
+```python
+first = [1, 2, 3, 4]
+second = ["a", "b", "c", "d", "e", "f"]
+
+for one, two in zip(first, second):
+    print(one, two)
+```
+
+```bash
+1 a
+2 b
+3 c
+4 d
+```
+
+And so you can also see that it only returns as many times as the smallest iterable. Great. This could be useful for us.
+
+### Other Uses for unpacking
+
+Unpacking can be used anywhere in python where the contents and length of an iterable is consistent. Here is a good example.
+
+```python
+name = input("What is your name? ")
+first, last = name.split()
+
+print("First name: " + first)
+print("Second name: " + second)
+```
+
+Can you see the problem with this code?
+
+What happens if the user inputs "James Brown Green"?
+
+We will error, because we will try to unpack three things into two variables. Here is a good example of cleaning user input. Let's try again, but this time we'll ask again if they input too many words.
+
+```python
+while True:
+    name = input("What is your name? ")
+    names_split = name.split()
+    if len(names_split) == 2:
+        break
+
+first, last = names_split
+```
+
+This time we're accounting for the user's potentially bad input by checking the size of the list created by the `.split()` method.
 
 ## Classes
 
