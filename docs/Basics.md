@@ -1,4 +1,8 @@
-# 2. Python Basics
+---
+sidebar_position: 2
+---
+
+# Basics
 
 ## Hello World
 

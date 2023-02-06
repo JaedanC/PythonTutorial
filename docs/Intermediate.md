@@ -1,4 +1,8 @@
-# 3. Python Intermediate
+---
+sidebar_position: 3
+---
+
+# Intermediate
 
 This document will go over some more complicated concepts like:
 
@@ -51,9 +55,9 @@ This is the preferred way to read files and this is what I will use from now on.
 
 ### Working with the contents
 
-So it's all well and good being able to read the contents of a file, but what exactly does the contents variable hold now? After calling the `f.read()` *method*, `contents` contains a string of the *entire* file. For example: let's say data.csv contains the following:
+So it's all well and good being able to read the contents of a file, but what exactly does the contents variable hold now? After calling the `f.read()` *method*, `contents` contains a string of the *entire* file. For example:
 
-```csv
+```csv title=data.csv
 name,age,number
 James,24,01234567
 Bob,36,30945703

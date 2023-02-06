@@ -1,4 +1,8 @@
-# 4. Python Advanced
+---
+sidebar_position: 4
+---
+
+# Advanced
 
 This document will go over the most complicated concepts:
 
@@ -29,7 +33,7 @@ Recursion is specifically to do with functions and how you can call them. Unders
 
 Currently the stack is empty. Let's write a sample program to show this stack.
 
-```python=
+```python
 def first(number):
     number += 5
     return number

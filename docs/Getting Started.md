@@ -1,4 +1,8 @@
-# 1. Getting Started
+---
+sidebar_position: 1
+---
+
+# Getting Started
 
 This tutorial will go over setting up your development environment.
 
