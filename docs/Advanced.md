@@ -486,6 +486,17 @@ Backwards
 
 As you can see we have decoupled the object and the iterator. This concept can be extended to traverse all kinds of weird data structures in many different ways.
 
+:::note
+
+If you really wanted to traverse a list backwards use:
+
+```python
+for item in reversed(my_list):
+    pass
+```
+
+:::
+
 ## Generators
 
 These work similarly to iterators but completely differently also. Generators introduce a new keyword `yield`. Before we move on, I need to stress that many people get confused between `return` and `yield`. The `yield` keyword is completely different to return and it only present in Python. This is why it is generally never spoken about. I have personally never written a generator, but knowing that they exist can be helpful.
