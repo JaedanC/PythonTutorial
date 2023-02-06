@@ -2,7 +2,8 @@
 // Note: type annotations allow type checking and IDEs autocompletion
 
 const lightCodeTheme = require('prism-react-renderer/themes/github');
-const darkCodeTheme = require('prism-react-renderer/themes/oceanicNext');
+// const darkCodeTheme = require('prism-react-renderer/themes/oceanicNext');
+const darkCodeTheme = require('prism-react-renderer/themes/palenight');
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
@@ -92,7 +93,7 @@ const config = {
             items: [
               {
                 label: 'Tutorial',
-                to: '/docs/getting-started',
+                to: '/docs/Getting%20Started',
               },
             ],
           },
