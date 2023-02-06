@@ -546,15 +546,26 @@ print(len(sys.argv)) # Prints the number of arguments
 print(sys.argv) # Prints the arguments
 ```
 
-Try running the code above like so:
+To try out command-line arguments for yourself, *open your terminal* and run the above code using:
 
 ```bash
-python arguments.py
-python arguments.py First
-python arguments.py Here is a long list of arguments
+$ python arguments.py
 ```
 
-What do you notice? *Note*: The first command-line argument is always the name of the file itself. This is expected behaviour.
+Once you've done that, try adding some command-line arguments and comparing it to what printed earlier:
+
+```bash
+$ python arguments.py First
+$ python arguments.py Here is a long list of arguments
+```
+
+What do you notice?
+
+:::info
+
+The first command-line argument is always the name of the file itself. This can be helpful sometimes, but usually the arguments we care about come after the name of the file.
+
+:::
 
 ### Task: Command line arguments
 
