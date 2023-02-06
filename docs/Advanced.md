@@ -17,21 +17,21 @@ This document will go over the most complicated concepts:
 
 ## Recursion
 
-Recursion is the act of running the same thing:
+Recursion is when you run the same function from inside the function.
 
-> Recursion is the act of running the same thing:
->> Recursion is the act of running the same thing:
->>> Recursion is the act of running the same thing:
->>>> Recursion is the act of running the same thing:
->>>>> Recursion is the act of running the same thing:
+> Recursion is when you run the same function from inside the function.
+>> Recursion is when you run the same function from inside the function.
+>>> Recursion is when you run the same function from inside the function.
+>>>> Recursion is when you run the same function from inside the function.
+>>>>> Recursion is when you run the same function from inside the function.
 
-Recursion is specifically to do with functions and how you can call them. Understanding recursion though first requires you to understand what "The Stack" is. Whenever a functions is called in Python, the existing state of the program is stored in a place in memory called the stack. I will represent the stack as a table.
+Recursion is specifically to do with functions and how you can call them. Understanding recursion though first requires you to understand what "The Stack" is. Whenever a function is called in Python, the existing state of the program is stored in a place in memory called the stack. I will represent the stack as a table.
 
 | Frame | Stack |
 | ----- | ----- |
 |       |       |
 
-Currently the stack is empty. Let's write a sample program to show this stack.
+Currently the stack is empty. Let's write a simple program to visualise how the stack works.
 
 ```python
 def first(number):
@@ -48,32 +48,32 @@ print(second(10))
 
 Evaluating the execution of `second(10)` is a little complicated, so let's follow it using using stack.
 
-- second() is called. The main execution is paused and placed on the stack:
+- `second()` is called. The main execution is paused and placed on the stack:
 
 | Frame | Stack         |
 | ----- | ------------- |
 | 1     | @ main line 9 |
 
-- Then in second() is called first() is called
+- Then in `second()` is called `first()` is called
 
 | Frame | Stack            |
 | ----- | ---------------- |
 | 1     | @ main line 9    |
 | 2     | @ second line 38 |
 
-- Then when first() returns, the old state is popped from the stack.
+- Then when `first()` returns, the old state is popped from the stack.
 
 | Frame | Stack         |
 | ----- | ------------- |
 | 1     | @ main line 9 |
 
-- Then when second() returns, the old state is popped from the stack.
+- Then when `second()` returns, the old state is popped from the stack.
 
 | Frame | Stack |
 | ----- | ----- |
 |       |       |
 
-This "Stack" is a real thing that under the hood keeps track of the variables and location of execution so that when a function returns, it knows where to resume the execution from.
+This "Stack" is a real thing that under the hood that keeps track of the variables and location of execution so that when a function returns, it knows where to resume the execution from.
 
 So here comes the fun part. Recursion. You can call the same function, from inside the function.
 
@@ -84,7 +84,7 @@ def my_function(a, b):
     print(a, b)
     return my_function(a, b + 1)
 
-print(my_function(1, 2))
+my_function(1, 2)
 ```
 
 ```bash
@@ -127,12 +127,12 @@ print(my_function(1, 2))
 'Done'
 ```
 
-Nice. This time, the stack was able to close because I gave it an exit strategy when b == 100. Depending on what you want a recursive function to do, the exit strategy (or more multiple strategies) may be different.
+Nice. This time, the stack was able to close because I gave it an exit strategy when `b == 100`. Depending on what you want a recursive function to do, the exit strategy (or more multiple strategies) may be different.
 
 One of the best cases for recursion is when searching a tree-like data structure. Below is an example of such a structure, and then how a recursive function may work to traverse the structure.
 
 ```python
-class Node:
+class TreeNode:
     def __init__(self, left, right):
         self.left = left
         self.right = right
@@ -153,20 +153,20 @@ class Node:
 #   0    5  8    4  6    2
 
 root = \
-    Node(
-        Node(
-            Node(0, 5),
-            Node(8, 4)
+    TreeNode(
+        TreeNode(
+            TreeNode(0, 5),
+            TreeNode(8, 4)
         ),
-        Node(
-            Node(6, 2),
+        TreeNode(
+            TreeNode(6, 2),
             7
         )
     )
 
 def print_all_nodes(node):
     # Base case
-    if not isinstance(node, Node):
+    if not isinstance(node, TreeNode):
         print(node)
         return
     
@@ -192,6 +192,8 @@ $ python nodes.py
 
 There will not be a task for this topic, as it is very situational. And often a recursive implementation can be done without recursion, with better performance. Usually the trade-off though is that a recursive solution may be elegant. The following recursive function breaks down an integer into a list of it's smallest factors.
 
+For this example it is important to note that adding two lists just combines them into one list.
+
 ```python
 def get_factors(number):
     # The recursive case is first.
@@ -209,19 +211,20 @@ print(get_factors(2520))
 ```
 
 ```bash
-$ python factors.py
 [2, 2, 2, 3, 3, 5, 7]
 ```
+
+It may be a worthwhile exercise to think about how we may go about trying to do this problem without using recursion.
 
 ## Magic methods
 
 In python there are some really cool ways to make your classes behave differently when exposed to various operations. These are done using *Magic methods*. These are special `__double_underscore__` methods that when overwritten can override the default behaviour.
 
-In this section we'll go over some of my favourite megic methods, where to find a list of them, and some truely cursed things we can do with them.
+In this section we'll go over some of my favourite magic methods, where to find a list of them, and some truely cursed things we can do with them.
 
 ### The good
 
-My favourite magic method is `__repr__()`. This method is responsible for converting an instance to a string. If you've ever tried printing an instance of a class you've made you might see something like this.
+My favourite magic method is `__repr__()`. This method is responsible for converting an class instance to a string. If you've ever tried printing an instance of a class you've made you might see something like this.
 
 ```python
 class Game:
@@ -235,11 +238,10 @@ print(deep_rock)
 ```
 
 ```bash
-$ python magic.py
 <__main__.Game object at 0x000002199EA37D60>
 ```
 
-This isn't particularly useful. Thankfully we can override this behaviour by defining a `__repr__` method.
+This isn't particularly useful. Thankfully we can override this behaviour by defining the `__repr__` method.
 
 ```python
 class Game:
@@ -260,17 +262,59 @@ print(deep_rock)
 ```
 
 ```bash
-$ python magic.py
 Game: Deep Rock Galatic  
 Age Rating: 16
 Platforms: ['PC', 'Xbox']
 ```
 
-This is substantially better! Another common magic method that I like to override is `__add__`. This one allows you to define what happens when you added something to this. This method has a parameter. The parameter is what they are trying to add to the instance. For example:
+This is substantially better! Another common magic method that I like to override is `__add__`. This one allows you to define what happens when you added something to the instance. This method has a parameter. The parameter is what they are trying to add to the instance. For example in:
 
 ```python
 deep_rock = Game("Deep Rock Galatic", 16, ["PC", "Xbox"])
-session = deep_rock + Player("James", 20, ["Xbox"])
+player = Player("James", 20, ["Xbox"])
+session = deep_rock + player
+```
+
+This is what is implicitly being called:
+
+```python
+session = deep_rock.__add__(player)
+```
+
+This is an exmaple of where this could be useful:
+
+```python
+class Collection:
+    def __init__(self):
+        self.games = []
+    
+    def add_game(self, game):
+        self.games.append(game)
+    
+    def __repr__(self):
+        return "{} game(s) in collection".format(len(self.games))
+
+
+class Game:
+    # Assume the same __init__ method
+    def __add__(self, other):
+        if isinstance(other, Game):
+            collection = Collection()
+            collection.add_game(self)
+            collection.add_game(other)
+            return collection
+        assert False, "Must be a game"
+
+
+deep_rock = Game("Deep Rock Galatic", 16, ["PC", "Xbox"])
+mario_kart = Game("Mario Kart", 6, ["Switch"])
+my_collection = deep_rock + mario_kart
+
+print(my_collection)
+```
+
+```bash
+2 game(s) in collection
 ```
 
 This could be a great way to combine two custom objects, or create a new one from a combination. Just note that the type of the second object is usually not known, so unless you use `isinstance()` you will have to guess. Here is an example where I create a class to represent a vector.
@@ -294,13 +338,13 @@ print(result)
 
 In the example above I've assumed the second object will be other vectors. And then returned a new Vector from the result.
 
-### How many are there
+### How many magic methods are there?
 
 A good way to find out is by running `dir(int)`. This will show you all the methods that are inherited by the `int` class. Googling any specific method will give you useful information.
 
 <https://www.tutorialsteacher.com/python/magic-methods-in-python>
 
-### Cursed?
+### Cursed Usage
 
 Overwriting magic methods allows you to produce some truely cursed behaviour.
 
@@ -310,7 +354,7 @@ class Number:
         self.value = value
     
     def __add__(self, other):
-        return Number(self.value - other.value)
+        return 42
 
     def __repr__(self):
         return f"Number({self.value})"
@@ -321,8 +365,7 @@ print(result)
 ```
 
 ```bash
-$ python cursed.py
-Number(2)
+42
 ```
 
 With great power comes great responsbility. We've only touched on a few of the magic methods in Python. I encourage you to investigate using more of them in your code if it makes sense to do so.
@@ -368,7 +411,6 @@ for number in my_list:
 ```
 
 ```bash
-$ python reverse_list.py
 4
 3
 2
@@ -465,7 +507,6 @@ print("Done")
 ```
 
 ```bash
-$ python generator.py
 1
 2
 3

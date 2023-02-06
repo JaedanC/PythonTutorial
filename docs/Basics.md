@@ -41,7 +41,11 @@ my_name = "Tom"
 print(my_name)
 ```
 
-The above would print *Tom* to the console.
+This is what would print to the console.
+
+```bash
+Tom
+```
 
 ### Operators
 
@@ -106,7 +110,9 @@ print(10 ** 3)
 
 print(14 % 5) # (The remainder of 14 / 5)
 # 4
+```
 
+```python
 # ------------ Assignment operators ------------ 
 number = 5
 # Assigns the variable 'number' to the integer 5
@@ -119,7 +125,9 @@ number -= 3 # Decrement number by 3. Same as writing 'number = number - 3'
             # This is effectively the opposite of above
 print(number) 
 # 5
+```
 
+```python
 # ------------ Comparison operators ------------
 
 print(5 == 5)
@@ -139,7 +147,9 @@ print(2 > 5)
 
 print(2 >= 5)
 # False
+```
 
+```python
 # ------------ Boolean operators ------------
 age = 16
 has_license = False
@@ -164,7 +174,7 @@ If the examples above are not sufficient then it is best to look them up.
 
 In maths a common formula is the [quadratic formula](https://en.wikipedia.org/wiki/Quadratic_formula). Using the scaffhold below, compute the two solutions of the quadratic. You will need to use the arithmetic operators for this task.
 
-```python
+```python title=quadratic.py
 # x^2 - 3x - 10
 
 a = 1
@@ -186,7 +196,7 @@ Sometimes you may want to request input from the user so that they can interact 
 
 We can optionally put some text in the function `input()` and this text will be printed to the screen. For example:
 
-```python
+```python title=hello_input.py
 name = input("What is your name? ")
 print("Hello " + name)
 ```
@@ -606,7 +616,7 @@ hello("James")
 hello("Bob")
 ```
 
-Note: <https://realpython.com/python-f-strings/#f-strings-a-new-and-improved-way-to-format-strings-in-python>
+See: [Python f-strings](https://realpython.com/python-f-strings/#f-strings-a-new-and-improved-way-to-format-strings-in-python)
 
 When we pass a string to the function `hello()`, the `name` variable will contain "Dave", "James" and then "Bob".
 
@@ -630,7 +640,7 @@ Hello Bob. Age: 50
 
 ### Copy
 
-Let me make a final remark about functions and that is that parameters we pass to a function are **copied**. This is important to know. Consider the following:
+Let me make a final remark about functions and that is that parameters we pass to a function are *copied*. This is important to know. Consider the following:
 
 ```python
 def modify(a):
@@ -647,11 +657,11 @@ What do you think would happen based upon the statement I made above? This is th
 5
 ```
 
-When we pass `nunber` to the function `modify`, it is copied. The local variable `a` is indeed 5 and then modified to be 15. But when we return from the function, the actual `number` has not been changed. Only the copy was changed.
+When we pass `number` to the function `modify`, it is copied. The local variable `a` is indeed 5 and then modified to be 15. But when we return from the function, the actual `number` has not been changed. Only the copy was changed.
 
 This is actually really good behaviour, because we know that functions can't edit the information we pass to functions. If we want functions to do that, then we would need to explicitly *return* the information we want to keep and reassign that information to another variable. So let's go back to out example and fix it so that the modify function actually modifys.
 
-```python=
+```python showLineNumbers
 def modify(a):
     a += 10
     return a
@@ -673,7 +683,7 @@ To reiterate, parameters are **copied**. Before moving onto the task I'll quickl
 
 Create a function that divides two numbers (the parameters), but instead of erroring when dividing by zero, it instead **returns** the number 0. Start with below as the scaffhold. Try to do this by using an if statement in the function.
 
-```python
+```python title=divide_by_challenge.py
 def divide_by(a, b):
     # Your code here
     pass
@@ -697,7 +707,7 @@ In an earlier task you computed the quadratic using fixed a, b, c values. One of
 
 Use the scaffhold below to adapt your code from the answer above.
 
-```python
+```python title=quadratic2.py
 def solve_quadratic(a, b, c):
     # Your code here
 
@@ -737,7 +747,7 @@ fruits.append("banana")
 
 It's more common because lists are very closely linked with loops and so *appending* to a list or reading an element from a list in a loop is extremely common. Here's an example:
 
-```python=
+```python showLineNumbers
 fruits = ["apple", "mango", "banana"]
 contains_n = []
 
@@ -802,7 +812,7 @@ banana = fruits[3]
 
 The above would error. Can you see why? The programmer was off-by-one.
 
-Aside: The index can also be a variable as long as the variable is an integer.
+The index can also be a variable as long as the variable is storing an integer.
 
 ### Task
 
@@ -843,8 +853,6 @@ An easy way to crash python is try and divide another number by 0. For example:
 print("Hello")
 ```
 
-Output:
-
 ```bash
 Traceback (most recent call last):
   File "zero.py", line 1, in <module>
@@ -864,8 +872,6 @@ except ZeroDivisionError:
 
 print("Hello")
 ```
-
-Output:
 
 ```bash
 oopsie
@@ -920,7 +926,7 @@ while True:
 
 If you want to, you can run this program. But without closing the terminal entirely it is extremely hard to stop execution of this program. You would essentially need to press CTRL+C twice SUPER fast. The first would be caught by the try block, and the second must happen while inside the except block. If you could get the second one to run exactly while inside the except block, the second KeyboardInterrupt would not be caught and would crash the program. But this code is effectively impossible to crash without completely killing the process externally via the operating system by closing the terminal.
 
-### Task
+### Task: User Division
 
 Write a program that will continue to ask the user for two valid numbers, and then when it does, it will attempt to divide the two. If a ZeroDivisionError occurs, print "Division by 0". Try to do this task without using a single **if** statement.
 

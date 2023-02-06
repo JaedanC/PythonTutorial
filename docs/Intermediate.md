@@ -14,7 +14,7 @@ This document will go over some more complicated concepts like:
 
 ## Files
 
-Reading and writing to files is actually fairly straight forward. All you need to know in Python is where the file is relative to where your running the program from. So for example if you have the current file layout in windows:
+Reading and writing to files is straight forward. All you need to know in Python is where the file is relative to where you're running the program from. So for example if you have the current file layout in windows:
 
 ```bash
 📂mystuff
@@ -25,22 +25,31 @@ Reading and writing to files is actually fairly straight forward. All you need t
     ┗ 📜second.txt
 ```
 
-If you run `python program.py` then to open `data.csv` you would simply write:
+If you wanted `program.py` to open `data.csv` you would simply write:
 
 ```python
 f = open("data.csv")
 contents = f.read()
 f.close()
-# do something
+# do something with contents
 ```
 
-To open `first.txt` you would need to provide the file path too:
+To open `first.txt` you would need to provide a more precise file path:
 
 ```python
 f = open("levels/first.txt")
 contents = f.read()
 f.close()
 ```
+
+To reiterate, the file path assumes the current directory is where the terminal is. In the example above, if your terminal is in:
+
+- `mystuff`
+    - To read `data.csv` write `data.csv`.
+    - To read `first.txt` write `levels/first.txt`
+- `my_stuff/levels`
+    - To read `data.csv` write `../data.csv`.
+    - To read `first.txt` write `first.txt`.
 
 ### With blocks
 
@@ -73,7 +82,7 @@ Bob,36,30945703
 Gary,47,98723850
 ```
 
-Wow, incredible, who would have guessed. What is important to know here that even though this is a text file, there are actually hidden characters in this file. This hidden character is the newline character (Denoted as \n in Python). This is typically what is written to a text file when you press enter. It is invisible, but it tells Notepad and other editors to show what's next on the next line. We can use this to our advantage to read each line separately.
+Wow, incredible, who would have guessed. What is important to know here that even though this is a text file, there are actually hidden characters in this file. This hidden character is the newline character (Denoted as `\n` in Python). This is typically what is written to a text file when you press `Enter` on your keyboard. It is invisible, but it tells Notepad and other editors to go to the next line. We can use this to our advantage to read each line separately.
 
 ```python
 lines = contents.split("\n")
@@ -85,9 +94,13 @@ $ python read_csv.py
 ['name,age,number', 'James,24,01234567', 'Bob,36,30945703', 'Gary,47,98723850']
 ```
 
-Cool, we now have a list whose elements are each a line from the file as a string. This may be what we want, but in most cases we'll want to do some further manipulation at that stage. Before going any further it is important to note in this example that python has a built-in module called `csv` that will do all this stuff for us, but for demonstrative purposes let's ignore that module.
+Cool, we now have a list whose elements are each a line from the file as a string. This may be what we want, but in most cases we'll want to do some further manipulation at that stage. 
 
-Finally, let's consider one last example where I go to use the information from above. Let's say I wanted to print what Gary's age was. How would I do that? Well let's break down the steps in english first, before trying to tackle it in python:
+This is where the example above diverges. In a real world scenario, what you want to do with the file will vary wildly. In this example though, we'll go over what it *may* look like to read a csv.
+
+And so it is important to note that in this example that python has a built-in module called `csv` that will do all this stuff for us, but for demonstrative purposes let's ignore that module.
+
+Let's say I wanted to print what Gary's age was. How would I do that? Well let's break down the steps in english first, before trying to tackle it in python:
 
 - Iterate over the lines in the csv
     - Split the line into name, age, and number on the comma
@@ -105,9 +118,13 @@ for line in lines:
         print(age)
 ```
 
+```bash
+47
+```
+
 **Note:** Reading csvs like this is really bad practice because strings are allowed to contain the "," character as long as they are enclosed in quotes. This is why the csv module exists so that us programmers don't need to reinvent the wheel.
 
-This is only one example of working with files. Sometimes we will need to parse and validate the information inside a file. Sometimes the file format is consisteny, other times it isn't and so we have to use our savvy skills of try/except blocks to extract the information we desire. Working with files requires a unique approach each time, but this is why knowing the fundamentals is key first.
+This is only one example of working with files. Sometimes we will need to parse and validate the information inside a file. Sometimes the file format is consistent, other times it isn't and so we have to use our savvy skills of try/except blocks to extract the information we desire. Working with files requires a unique approach each time, but this is why knowing the fundamentals is key first.
 
 ### Writing to files
 
@@ -122,7 +139,7 @@ By adding `"w"` to the open function, we are telling python that we intend to *o
 
 To write to an open file `f`, you call the `f.write()` method where you pass a string. If you want to write to a newline you can include a `"\n"` as we've seen earlier. Calling `f.write()` multiple times will continue to append text. Some people like to write files one line at a time, others not. This is personal preference usually.
 
-Consier this example that writes out the csv we just read earlier.
+Consider this example that writes out the csv we just read earlier.
 
 ```python
 lines = [
@@ -139,7 +156,7 @@ with open("data_2.csv", "w") as f:
 
 In this example, the only downside to just appending `"\n"` to each line is that the final line will be blank in `data_2.csv`
 
-```csv
+```csv title=data_2.csv
 name,age,number
 James,24,01234567
 Bob,36,30945703
@@ -161,7 +178,14 @@ with open("data_2.csv", "w") as f:
     f.write("\n".join(lines))
 ```
 
-### Task
+```csv title=data_2.csv
+name,age,number
+James,24,01234567
+Bob,36,30945703
+Gary,47,98723850
+```
+
+### Task: Reading Levels
 
 Let's simulate a game where a file may contain information about the level. Consider the following file:
 
@@ -195,7 +219,7 @@ with open("level.txt") as f:
 
 Remember to use the `.split()` method.
 
-### Task Writing
+### Task: Writing Levels
 
 **Note:** Feel free to read the dictionaries section before trying this task.
 
@@ -332,11 +356,13 @@ print("Only keys")
 for key in passwords.keys():
     print(key)
 
-print("\nOnly values")
+print()
+print("Only values")
 for value in passwords.values():
     print(value)
 
-print("\nBoth")
+print()
+print("Both")
 for key, value in passwords.items():
     print(key, value)
 ```
@@ -363,9 +389,9 @@ John asdf
 
 This example is fairly self-explanitory. Using the `.keys()`, `.values()` or `.items()` methods we can get the corresponding iterator for the information we desire.
 
-### Task
+### Task: Json
 
-Dictionaries are often the data type that json gets parsed to. Json is the file format the many online Web API's use to send information. Using your knowledge of Dictionaries and for loops, extract information from the dictionary below. Do not hard-code the answer. Try to extract the information from the dictionary.
+Dictionaries are often the data type that [json](https://en.wikipedia.org/wiki/JSON) gets parsed to. Json is the file format the many online Web API's use to send information. Using your knowledge of Dictionaries and for loops, extract information from the dictionary below. Do not hard-code the answer. Try to extract the information from the dictionary.
 
 ```python
 response = {
@@ -470,6 +496,7 @@ fruits = ["Apple", "Banana", "Mango"]
 i = 0
 ```
 
+*Todo*
 
 ## Classes
 
@@ -742,7 +769,7 @@ child = Player("Timmy Green", 8, "Switch")
 
 Start with this:
 
-```python
+```python title=game.py
 class Game:
     def __init__(self, name, age_rating, platforms):
         # Your code here
@@ -810,7 +837,7 @@ Everything else is passed by reference (not copied):
 
 Write a function that takes in an instance to the class "Grade" and checks to see if the student passed the assessment. If they did, assign the Grade to be passed.
 
-```python
+```python title=grade.py
 class Grade:
     def __init__(self, student):
         self.student = student
@@ -885,7 +912,7 @@ Think kind is not used as often, but can be handy to know. You can actually acce
 
 Assuming you completed the tasks above, let's access `game.py` to reuse the `Game` and `Player` classes we made earlier, but do so inside another file. First lets see how we would do that.
 
-```python
+```python title=game_test.py
 import game
 
 deep_rock = game.Game("Deep Rock Galatic", 16, ["PC", "Xbox"])
@@ -895,7 +922,7 @@ It's as simple as that. Since the name of the file is `game.py`, we access it wi
 
 But sometimes we don't want to use dot notation. What if I instead want to just use `Game` directly. Well, luckily you can do that using:
 
-```python
+```python title=game_test.py
 from game import Game, Player
 
 james = Player("James", 20, ["Xbox"])
