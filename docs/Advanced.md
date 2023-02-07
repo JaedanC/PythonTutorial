@@ -25,7 +25,7 @@ Recursion is when you run the same function from inside the function.
 >>>> Recursion is when you run the same function from inside the function.
 >>>>> Recursion is when you run the same function from inside the function.
 
-Recursion is specifically to do with functions and how you can call them. Understanding recursion though first requires you to understand what "The Stack" is. Whenever a function is called in Python, the existing state of the program is stored in a place in memory called the stack. I will represent the stack as a table.
+Recursion is specifically to do with functions and how you can call them. Understanding recursion though first requires you to understand what the "call stack" is. Whenever a function is called in Python, the existing state of the program is stored in a place in memory called the stack. I will represent the stack as a table.
 
 | Frame | Stack |
 | ----- | ----- |
@@ -499,7 +499,7 @@ for item in reversed(my_list):
 
 ## Generators
 
-These work similarly to iterators but completely differently also. Generators introduce a new keyword `yield`. Before we move on, I need to stress that many people get confused between `return` and `yield`. The `yield` keyword is completely different to return and it only present in Python. This is why it is generally never spoken about. I have personally never written a generator, but knowing that they exist can be helpful.
+These work similarly to iterators but completely differently also. Generators introduce a new keyword `yield`. Before we move on, I need to stress that many people get confused between `return` and `yield`. The `yield` keyword is completely different to return and it's a feature only present in Python. This is why it is generally never spoken about. I have personally never written a generator, but knowing that they exist can be helpful.
 
 A generator allows you to create a function and treat it like an iterator. Though typically as the name suggests, rather than iterating over something, it instead is generating some sequence. Let me give you an example generator where I mimic the bahaviour of range().
 
@@ -526,7 +526,7 @@ print("Done")
 
 What is happening here is very weird. The yield keyword acts like a return, but when the function is called again, it resumes execution immediately at the yield statement resuming execution from yield. The generator is considered consumed when the function returns normally. In the example above it's when the `while` loop completes.
 
-I'm not going to talk about yield any more than that. If you really need a generator then you're probably fine looking up the details yourself. If you are still trying to grapple with functions themselves, then please just ignore that yield exists completely to avoid confusion. **return**, **return**, **return**.
+I'm not going to talk about yield any more than that. If you really need a generator then you're probably fine looking up the details yourself. If you are still trying to grapple with functions themselves, then please just ignore that yield exists completely to avoid confusion.
 
 ## List Comprehensions
 
@@ -642,3 +642,287 @@ print(numbered)
 ```
 
 Here you can see I've filtered both using `name` and `i`, but any valid condition works too.
+
+## In operator
+
+I've left this for the advanced section because it isn't required in everyday use, but can be really helpful at shortening code if used correctly. It also has a few complexities that I want to expand upon here.
+
+The `in` operator is used to check if an element is inside a collection. Conversely the `not in` operator checks if an element is not in a collection. Very straight-forward. This simple concept can simplify a lot of code. Consider:
+
+```python
+# Does this list have Tim in it?
+friends = ["James", "Bob", "Tim", "Josh", "Jim"]
+found_tim = False
+for name in friends:
+    if name == "Tim":
+        found_tim = True
+        break
+```
+
+This is a very typical for loop designed to check whether the element "Tim" is inside the List collection. Here's the same code but using the `in` operator:
+
+```python
+friends = ["James", "Bob", "Tim", "Josh", "Jim"]
+found_tim = "Tim" in friends
+```
+
+Absolute wizardry. But also not that hard to understand what's going on under the hood. Implicitly the `in` operator iterates through the collection and check for equality. If it finds an element that matches then the expression returns True. Otherwise False. Effectively doing the exact same thing as above.
+
+Since it's now a one-liner, we can also use this in an `if` expression very easily:
+
+```python
+friends = ["James", "Bob", "Tim", "Josh", "Jim"]
+
+if "Tim" in friends:
+    print("Tim is my friend")
+```
+
+### Going deeper
+
+Let's also go one step further and see how we can utilise the `in` operator with our own classes. First, it's important to note the terminology I used earlier:
+
+> Implicitly the `in` operator iterates through the collection and check for equality.
+
+1. Remember, *iterate* is actually the `__iter__` and `__next__` methods we spoke about earlier.
+2. And checking for equality? Well that also comes under it's own magic method, `__eq__`. This magic method is the same one that is called when we use `==`. Important to realise the the `__eq__` method goes under the thing inside the collection, not the collection itself.
+
+So using this information let's expand our Vector class to support the `in` operator. I will use it to check if a value is inside any of the components of the vector.
+
+```python
+class Book:
+    def __init__(self, title, author):
+        self.title = title
+        self.author = author
+
+    def __eq__(self, other):
+        return self.title == other.title and self.author == other.author
+
+
+class Library:
+    def __init__(self):
+        self.books = []
+    
+    def add_book(self, book):
+        self.books.append(book)
+
+    def __iter__(self):
+        self.n = 0
+        return self
+    
+    def __next__(self):
+        if self.n >= len(self.books):
+            raise StopIteration
+        book = self.books[self.n]
+        self.n += 1
+        return book
+
+
+lib = Library()
+lib.add_book(Book("Harry Styles", "J. K. Growling"))
+lib.add_book(Book("The Paper the Stone and the Scissors", "C. Slewis"))
+lib.add_book(Book("The Hungry Games", "Suzanne Ramsay"))
+
+# And so let's say I'm a librarian and I want to check if this book has already
+# been added to the library.
+new_book = Book("The Hungry Games", "Suzanne Ramsay")
+is_new = new_book not in lib
+print(f"The book is new: {is_new}")
+```
+
+```bash
+The book is new: False
+```
+
+Alternatively:
+
+```python
+new_book = Book("Lord of the kings", "H. R. R. Zimmer")
+is_new = new_book not in lib
+print(f"The book is new: {is_new}")
+```
+
+```bash
+The book is new: True
+```
+
+## Lambda expressions
+
+This feature in Python let's you write functions as quick and dirty one liners. The best use use for lambda expressions come out when we look at some of python's most popular built in functions that can benefit from the feature:
+
+- `filter`
+- `map`
+
+This is what the documentation for [filter](https://docs.python.org/3/library/functions.html#filter) says:
+
+> `filter(function, iterable)`
+>
+> - Construct an iterator from those elements of iterable for which function returns true. iterable may be either a sequence, a container which supports iteration, or an iterator. If function is None, the identity function is assumed, that is, all elements of iterable that are false are removed.
+
+So here introduces a really interesting concept in programming:
+
+Functions are also just variables.
+
+Here's an example of what I mean:
+
+```python
+def add_five(number):
+    return number + 5
+
+# I'm not calling the function here!
+my_function = add_five
+
+# But I am here
+print(my_function(2))
+```
+
+```bash
+7
+```
+
+So I can store a function inside another variable. And so we can actually exploit this feature. Before we use the built-in filter function in Python, here's what an implementation of filter might look like:
+
+```python
+def my_filter(function, iterable):
+    keep = []
+    for item in iterable:
+        if function(item):
+            keep.append(item)
+    return keep
+```
+
+So `my_filter` takes in a function that is applied to each element of the collection, and only the ones that return true with the function are kept. With this, let's use filter function in Python (look to the above implementation if you are still unsure what it does). Do note, that technically the filter function is a *Generator* and so to access the results of the filter we either need to directly expand it to a list, or iterate through the results. I will expand it to a list:
+
+```python
+def is_even(number):
+    return number % 2 == 0
+
+numbers = [1, 2, 3, 4, 5, 6, 7, 8]
+evens = list(filter(is_even, numbers))
+
+print(evens)
+```
+
+```bash
+[2, 4, 6, 8]
+```
+
+So here comes in lambda expressions. Lambda expressions let us create one-liner functions that can be used in functions like filter. Here's the `is_even` function but as a lambda expression:
+
+```python
+is_even = lambda number: number % 2 == 0
+
+numbers = [1, 2, 3, 4, 5, 6, 7, 8]
+evens = list(filter(is_even, numbers))
+
+print(evens)
+```
+
+```bash
+[2, 4, 6, 8]
+```
+
+And so finally let's remove the middle variable `is_even` and simplify the `number` variable:
+
+```python
+numbers = [1, 2, 3, 4, 5, 6, 7, 8]
+evens = list(filter(lambda n: n % 2 == 0, numbers))
+
+print(evens)
+```
+
+```bash
+[2, 4, 6, 8]
+```
+
+Even though this is neat, it really is only useful if you need to do a really quick one-liner. The syntax for lambda expression does support multiple parameters but in my experience if you need a second one you should probably write a function for code-readability's sake.
+
+### Map function
+
+The [map](https://docs.python.org/3/library/functions.html#map) function is great for applying a function across an iterable, not to filter, but to modify each element in some way.
+
+> Return an iterator that applies function to every item of iterable, yielding the results.
+
+Consider this:
+
+```python
+class Game:
+    def __init__(self, name):
+        self.name = name
+
+games = [
+    Game("Deep Rock"),
+    Game("Mario Kart"),
+    Game("Candy Crush"),
+    Game("L4D2")
+]
+```
+
+Let's say we want a list of all the names of the game. We could do this:
+
+```python
+names = []
+for game in games:
+    names.append(game.name)
+```
+
+Nice and simple. But let's use map instead:
+
+```python
+names = list(map(lambda g: g.name, games))
+print(names)
+```
+
+```bash
+['Deep Rock', 'Mario Kart', 'Candy Crush', 'L4D2']
+```
+
+## Performance
+
+There's a few topic to cover under performance, but my main goal here is to highlight a few things that you may want to consider when thinking about or diagnosing performance.
+
+Firstly, Python is a very slow language to run even though it is built upon a much faster language, C. In direct comparisons C would smash Python will an order of magnitude, but what you gain in performance is development time.
+
+It is much faster to *write* Python code than it is to write C and sometimes the extra speed you get from C is irrelevant. Games are not writing in Python because they are performance critical. But a Python script to pull information from an API that takes 2 seconds is equally acceptable especially if the Python one is easier to modify in the future. That's the first thing I want to preface about performance. That being said, there are way to profile Python code and things to consider if you do want to run things faster in Python.
+
+With that said, some performance critical built-in functions in Python are written directly in C so they are much faster than trying to write it yourself. Consider this when you feel the urge to reinvent the wheel. Don't.
+
+### Profiling code
+
+The simpliest library to use that can profile code is `time`. `time` is a built-in module that contains functions to grab the current time with high-accuracy. This is great for measuring the performance of different solutions to the same problem, and comparing what is faster. Here is a typical usage of time:
+
+```python
+import time
+
+def function_that_may_take_a_while():
+    pass
+
+start_time = time.perf_counter()
+for _ in range(100):
+    function_that_may_take_a_while()
+end_time = time.perf_counter()
+
+print("Function took {} seconds".format(end_time - start_time))
+```
+
+Here we've profiled running the function 100 times.
+
+There are other libraries that help with profiling like `cProfile` but these are out of scope of this tutorial. Just know that it can be done and it's worth looking it up if it's important to you.
+
+### Time Complexity
+
+[Time complexity](https://en.wikipedia.org/wiki/Time_complexity) is a term used to describe how long it takes *at worst* to do some calculation with respect to the size of the input. Here's an example:
+
+```python showLineNumbers
+n = 1000
+target = 420
+
+has_number = False
+for number in range(n):
+    if number == target:
+        has_number = True
+        break
+```
+
+In this example, the time complexity is `n` because to search the list requires looping all `n` numbers at worst. If you want to know more about time complexity, then go the link provided above and read about the "Table of common time complexities".
+
+What is important to note here is that some operations are much faster if done using the built-in python implementation because they've optimsed the code to use an algorithm with a reduced time-complexity.

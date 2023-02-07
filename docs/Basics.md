@@ -4,7 +4,55 @@ sidebar_position: 2
 
 # Basics
 
-## Hello World
+This document will go over basic coding concepts:
+
+- Printing
+- Variables
+- Operators
+- User Input
+- Types
+- `if` Statements
+- Loops
+- Lists
+- Command-line arguments
+- Functions
+- Exceptions
+
+## Printing
+
+In most Python programs we write, printing information back the user is important. I've the program is designed to perform some calculation, then telling us the result would be quite important. In Python if we write
+
+```python
+5 + 5
+```
+
+The calculation is indeed being done! But, unless we specifically tell python to print the result then it may appear as though it's doing nothing. This is where the most important function comes in:
+
+`print()`
+
+Whatever we put in the brackets will be *printed* to the terminal. That is, after we run the program text will appear in our terminal. Let's try the example above again.
+
+```python
+print(5 + 5)
+```
+
+```bash
+10
+```
+
+There we go. Now we can see the answer.
+
+As we begin to learn more about Python you will learn more about the syntax and types. But for now, if you would like to print text then it needs to be put inside quotations:
+
+```python
+# This is not valid
+print(My name is James)
+
+# This is valid
+print("My name is James")
+```
+
+### Task: Hello World
 
 Write a program that prints out the words, "Hello, World" to the terminal.
 
@@ -47,7 +95,7 @@ This is what would print to the console.
 Tom
 ```
 
-### Operators
+## Operators
 
 With this knowledge it may now be useful to know various operators inside Python. These are mostly universal to every programming language. Below are the operators that you will see the most, but there are a few more if you are willing to look them up. Operators are usually split into categories. First are the arithmetic operators.
 
@@ -233,7 +281,7 @@ Everything inside of python has a type. Most of the types we will be working wit
 
 - Booleans: True or False
 - Integers: Positive or Negative numbers with no decimal
-- Floats: Approximate representations of decimal numbers (try `1.2 - 1`)
+- Floats: Approximate representations of decimal numbers (try [0.1 + 0.2](https://www.youtube.com/watch?v=PZRI1IfStY0))
 - Strings: Words. 'Strings' of letters.
 - Lists: A collection that can contain multiple other things (discussed later).
 
@@ -525,7 +573,79 @@ This challenge makes use of *if* statements and *boolean operators*.
 
 We've briefly touched on lists in the previous sections but let's spend some time specifically looking at lists. Lists are just another data-type in Python. At their core, they are merely a way of containing a list of other data types. Who would've thought right?
 
-## Command line arguments
+### Appending to lists
+
+Lists can be defined with elements already in them as I've done earlier with:
+
+```python
+fruits = ["apple", "mango", "banana"]
+```
+
+But a more common way to create lists is by creating an empty list and then *appending* to the list. The same list as above can be created using the following:
+
+```python
+fruits = []
+fruits.append("apple")
+fruits.append("mango")
+fruits.append("banana")
+```
+
+It's more common because lists are very closely linked with loops and so *appending* to a list or reading an element from a list in a loop is extremely common. Here's an example:
+
+```python showLineNumbers
+fruits = ["apple", "mango", "banana"]
+contains_n = []
+
+for fruit in fruits:
+    for letter in fruit:
+        if letter == "n"
+            contains_n.append(fruit)
+            # Only breaks the inner for loop
+            # Takes us back to line 4
+            break
+
+print(contains_n)
+```
+
+```bash
+['mango', 'banana']
+```
+
+This above code is a very crude example of a filter, where I am filtering the fruits list to only contain the fruits that have the letter n in them. I do this by first iterating over the fruits, and then iterating over each letter in the fruit to test if the letter is "n". Now, the above isn't the most effective way to filter a list, but it works.
+
+### Reading from lists
+
+Again, we've already looked at one of the most common ways to read from lists; the for loop. But, sometimes we want to access a specific element in the list directly. We do this with the square bracket notation `[]`. So yes, while we define lists with square brackets, we also read from lists using square brackets too. Inside the square brackets we put the *index* we want to access. So if we want to access each element we would put:
+
+```python
+fruits = ["apple", "mango", "banana"]
+apple = fruits[0]
+mango = fruits[1]
+banana = fruits[2]
+```
+
+As you can see, 0 is the first element in the list.
+
+Here is another example which is fairly common:
+
+```python
+name = "James Smith"
+name_list = name.split(" ")
+# name_list = ["James", "Smith"]
+
+first_name = name_list[0]
+last_name = name_list[1]
+```
+
+The `.split()` *method* will split the string in two and return a list. We can then grab specific elements from the string.
+
+:::info Methods and Functions
+
+You may have noticed at this point that sometimes we call a function directly like `print()` but other times we call a function on an object itself like `thing.split()`. The latter is technically not a function, but rather a *method*. Until I explicitly talk about *methods* it is safe to assume that *methods* and *functions* are effectively the same.
+
+:::
+
+## Command-line arguments
 
 Command-line arguments let you pass user input to the program on execution of the program. When running the program with `python game.py` each word after the program is called an **argument**. For example:
 
@@ -751,78 +871,6 @@ $ python quadratic2.py
 [(2+1.5j), (2-1.5j)]
 ```
 
-### Appending to lists
-
-Lists can be defined with elements already in them as I've done earlier with:
-
-```python
-fruits = ["apple", "mango", "banana"]
-```
-
-But a more common way to create lists is by creating an empty list and then *appending* to the list. The same list as above can be created using the following:
-
-```python
-fruits = []
-fruits.append("apple")
-fruits.append("mango")
-fruits.append("banana")
-```
-
-It's more common because lists are very closely linked with loops and so *appending* to a list or reading an element from a list in a loop is extremely common. Here's an example:
-
-```python showLineNumbers
-fruits = ["apple", "mango", "banana"]
-contains_n = []
-
-for fruit in fruits:
-    for letter in fruit:
-        if letter == "n"
-            contains_n.append(fruit)
-            # Only breaks the inner for loop
-            # Takes us back to line 4
-            break
-
-print(contains_n)
-```
-
-```bash
-['mango', 'banana']
-```
-
-This above code is a very crude example of a filter, where I am filtering the fruits list to only contain the fruits that have the letter n in them. I do this by first iterating over the fruits, and then iterating over each letter in the fruit to test if the letter is "n". Now, the above isn't the most effective way to filter a list, but it works.
-
-### Reading from lists
-
-Again, we've already looked at one of the most common ways to read from lists; the for loop. But, sometimes we want to access a specific element in the list directly. We do this with the square bracket notation `[]`. So yes, while we define lists with square brackets, we also read from lists using square brackets too. Inside the square brackets we put the *index* we want to access. So if we want to access each element we would put:
-
-```python
-fruits = ["apple", "mango", "banana"]
-apple = fruits[0]
-mango = fruits[1]
-banana = fruits[2]
-```
-
-As you can see, 0 is the first element in the list.
-
-Here is another example which is fairly common:
-
-```python
-name = "James Smith"
-name_list = name.split(" ")
-# name_list = ["James", "Smith"]
-
-first_name = name_list[0]
-last_name = name_list[1]
-```
-
-The `.split()` *method* will split the string in two and return a list. We can then grab specific elements from the string.
-
-:::info Methods and Functions
-
-You may have noticed at this point that sometimes we call a function directly like `print()` but other times we call a function on an object itself like `thing.split()`. The latter is technically not a function, but rather a *method*. Until I explicitly talk about *methods* it is safe to assume that *methods* and *functions* are effectively the same.
-
-:::
-
 ### IndexError
 
 A common error that new programmers will encounter is the IndexError. This error occurs when you try to access an element in a list that does not exist. For example:
@@ -875,7 +923,90 @@ Exceptions or Errors in Python occur when something happens that Python doesn't 
 - ValueError
 - FileNotFoundError
 
-It doesn't take much to trigger an error. Some errors are unrecoverable fullstop (Syntax Errors -> You wrote invalid Python code and Python doesn't know how to interpret what you wrote). But most other errors can be recovered from as long as you as the coder anticipate them, and provide it with some steps to take if an error occurs. This can be done using the **try** and **except** block in Python.
+It doesn't take much to trigger an error. Some errors are unrecoverable fullstop (Syntax Errors -> You wrote invalid Python code and Python doesn't know how to interpret what you wrote).
+
+Whenever an Error occurs in Python it will try its best to give you all the information you need to locate the bug. If you have a program like this:
+
+```python title=locating_errors.py showLineNumbers
+name = "Bill"
+
+fruits = ["Apple", "Banana", "Mango"]
+
+print(fruits[3])
+
+maths = 6 **/ 3
+
+print(maths)
+```
+
+This is what happens when we try to run it:
+
+```bash
+Traceback (most recent call last):
+  File ".\locating_errors.py", line 5, in <module>
+    print(fruits[3])
+          ~~~~~~^^^
+IndexError: list index out of range
+```
+
+This is what we can get from the error:
+
+1. It happened in the file "locating_errors.py"
+2. The problem was on line 5
+3. The problem happened inside "module" (This may also have the name of the function if the error happened inside a function).
+4. The error was an IndexError and the message was "list index out of range".
+
+Oh silly me, I accessed outside the bounds of a list. Let me fix the bug:
+
+```python title=locating_errors.py showLineNumbers
+name = "Bill"
+
+fruits = ["Apple", "Banana", "Mango"]
+
+print(fruits[2]) # Fixed
+
+maths = 6 **/ 3
+
+print(maths)
+```
+
+```bash
+File ".\locating_errors.py", line 7
+    maths = 6 **/ 3        
+                ^
+SyntaxError: invalid syntax
+```
+
+That's not a valid operator. Let me remove the extra `/` and try again.
+
+```python
+name = "Bill"
+
+fruits = ["Apple", "Banana", "Mango"]
+
+print(fruits[2]) # Fixed
+
+maths = 6 ** 3
+
+print(maths)
+```
+
+```bash
+Mango
+216
+```
+
+Excellent it works. Whenever an error is thrown be sure to read it carefully to know where or how to fix the problem. Consider googling the specific error or situation to know what you did wrong.
+
+:::info
+
+If an error occurs while you are inside lots of different functions, you'll actually see the "call stack" printed out as well. To let you trace where the error occurred specifically. Do not worry about this yet if you are unsure what this means. The "call stack" is spoken about later.
+
+:::
+
+### Recovering from errors
+
+But most other errors can be recovered from as long as you as the coder anticipate them, and provide it with some steps to take if an error occurs. This can be done using the **try** and **except** block in Python.
 
 ### Try/Except
 
@@ -941,13 +1072,13 @@ This code will continue to ask for user input until it finally finds some valid 
 
 :::tip
 
-Sometimes letting an error be thrown is better than catching it because some errors we can't recover from. A `FileNotFoundError` when trying to open a file may be a good example.
+Sometimes letting an error be thrown is better than catching it because some errors might help us find bugs in our program. In some the tasks above I've used the [assert](https://www.w3schools.com/python/ref_keyword_assert.asp) keyword to do exactly that.
 
 :::
 
 :::info
 
-Later the idea of "The Stack" is introduced. What happens when an error is raised is that the stack is continously popped until a try/except block is found. If it can't find one, the program crashes.
+When an error is raised is that the "call stack" is continously popped until a try/except block is found. If it can't find one, the program crashes. More on the stack later.
 
 :::
 

@@ -94,7 +94,7 @@ $ python read_csv.py
 ['name,age,number', 'James,24,01234567', 'Bob,36,30945703', 'Gary,47,98723850']
 ```
 
-Cool, we now have a list whose elements are each a line from the file as a string. This may be what we want, but in most cases we'll want to do some further manipulation at that stage. 
+Cool, we now have a list whose elements are each a line from the file as a string. This may be what we want, but in most cases we'll want to do some further manipulation at that stage.
 
 This is where the example above diverges. In a real world scenario, what you want to do with the file will vary wildly. In this example though, we'll go over what it *may* look like to read a csv.
 
@@ -584,9 +584,33 @@ first, last = names_split
 
 This time we're accounting for the user's potentially bad input by checking the size of the list created by the `.split()` method.
 
+### Task: Unpacking
+
+Let practice unpacking. Starting with the code below, change it to use unpacking instead of reading the elements of the list one at a time. The output should remain identical to what it was before you made the change.
+
+```python
+games = ["Deep Rock", "Candy Crush", "Mario Kart", "Rubbish"]
+
+# Unpack this instead
+deep_rock = games[0]
+candy_crush = games[1]
+mario_kart = games[2]
+# -----------
+
+print(f"I like {deep_rock} when I'm at home")
+print(f"I like {candy_crush} when I'm on the train")
+print(f"I like {mario_kart} when I'm with friends")
+```
+
+```bash
+I like Deep Rock when I'm at home
+I like Candy Crush when I'm on the train
+I like Mario Kart when I'm with friends
+```
+
 ## Classes
 
-Classes frankly are the most powerful thing inside Python and many other programming languages. We usuallyn leave teaching them till last because understanding how they work touches on a bunch of concepts. If you've written a Python program, you've interacted with classes, even if you didn't know it.
+Classes are the most powerful concept inside Python and many other programming languages. We usuallyn leave teaching them till last because understanding how they work touches on a bunch of concepts. If you've written a Python program, you've interacted with classes, even if you didn't know it.
 
 Classes are templates that can be instantiated. Let me give you a real life example before talking code. Whenever a car company want to make a new car, they first have to define a reference template. Then, after that many cars are made using that template. Each car is an instance of the template. The template car might have a certain set of statistics or data associated with it, that over time will change for each instance. For example, the template car does not have any petrol in it. Instance cars started with no petrol, but over time they will have varying amounts of petrol in it. In python, we can create our own template using the new keyword **class**.
 
