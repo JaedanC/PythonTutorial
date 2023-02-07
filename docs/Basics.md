@@ -895,7 +895,7 @@ The index can also be a variable if the variable is an integer.
 
 :::
 
-### Task
+### Task: Returning
 
 Given the scaffhold below, finish the function so that it *returns* the sum of the first and last elements in a list of numbers.
 
@@ -986,7 +986,7 @@ fruits = ["Apple", "Banana", "Mango"]
 
 print(fruits[2]) # Fixed
 
-maths = 6 ** 3
+maths = 6 ** 3 # Fixed
 
 print(maths)
 ```

@@ -25,7 +25,7 @@ Recursion is when you run the same function from inside the function.
 >>>> Recursion is when you run the same function from inside the function.
 >>>>> Recursion is when you run the same function from inside the function.
 
-Recursion is specifically to do with functions and how you can call them. Understanding recursion though first requires you to understand what the "call stack" is. Whenever a function is called in Python, the existing state of the program is stored in a place in memory called the stack. I will represent the stack as a table.
+Recursion is related with functions and how we can call them. Understanding recursion first requires you to understand what the "call stack" is. Whenever a function is called in Python, the existing state of the program is stored in a place in memory called the stack. I will represent the stack as a table.
 
 | Frame | Stack |
 | ----- | ----- |
@@ -34,58 +34,66 @@ Recursion is specifically to do with functions and how you can call them. Unders
 Currently the stack is empty. Let's write a simple program to visualise how the stack works.
 
 ```python
-def first(number):
+def second(number):
     number += 5
     return number
 
-def second(blah):
+def first(blah):
     blah += 7
-    blah = first(blah)
+    blah = second(blah)
     return blah
 
-print(second(10))
+print(first(10))
 ```
 
-Evaluating the execution of `second(10)` is a little complicated, so let's follow it using using stack.
+Evaluating the execution of `first(10)` is a little complicated, so let's follow it using using stack.
 
-- `second()` is called. The main execution is paused and placed on the stack:
+- `first()` is called. The main execution is paused and placed on the stack:
 
 | Frame | Stack         |
 | ----- | ------------- |
 | 1     | @ main line 9 |
 
-- Then in `second()` is called `first()` is called
+- Then in `first()`, `second()` is called
 
 | Frame | Stack            |
 | ----- | ---------------- |
 | 1     | @ main line 9    |
 | 2     | @ second line 38 |
 
-- Then when `first()` returns, the old state is popped from the stack.
+- Then when `second()` returns, the old state is popped from the stack.
 
 | Frame | Stack         |
 | ----- | ------------- |
 | 1     | @ main line 9 |
 
-- Then when `second()` returns, the old state is popped from the stack.
+- Then when `first()` returns, the old state is popped from the stack.
 
 | Frame | Stack |
 | ----- | ----- |
 |       |       |
 
-This "Stack" is a real thing that under the hood that keeps track of the variables and location of execution so that when a function returns, it knows where to resume the execution from.
+This "Stack" is a real thing that under the hood. This "Call Stack" is made up of "Stack Frames". Each stack frame contains:
 
-So here comes the fun part. Recursion. You can call the same function, from inside the function.
+- The values of the local variables in that function. Including the parameters.
+- The current location of execution inside the function.
+
+If the same function is called twice (without them returning) and so ends up the stack a second time, each call of the function will have it's own "Stack Frame". So theres nothing stopping us from utilising this property to use functions "recursively".
+
+So what is recursion? You can call the same function, from inside the function.
 
 For example:
 
-```python
+```python showLineNumbers
 def my_function(a, b):
     print(a, b)
-    return my_function(a, b + 1)
+    result = my_function(a, b + 1)
+    return result
 
 my_function(1, 2)
 ```
+
+As you can see we are calling `my_function()` from inside `my_function()`. Each call of `my_function()` will have it's own stack frame. The only problem with this is:
 
 ```bash
 1 2
@@ -101,19 +109,19 @@ Traceback (most recent call last):
 RecursionError: maximum recursion depth exceeded while calling a Python object
 ```
 
-Ah dang. We hit a Stack Overflow. Our stack got too big. We kept calling the function too many times and didn't let the function close. This is kinda like an infinite loop, but this one results in us eating all the resources of the computer until it crashes. Not great.
+Ah dang. If we try to run this code we hit a RecursionError. This may also be called a Stack Overflow because our stack got too big. We kept calling the function without giving it any way to begin closing the stack. Every time line 3 is called, a new stack frame is created and we begin execution at line 1 again. As you can see, line 4 is never called and so the stack is never allowed to shrink again. This results in the stack completely filling itself with calls to `my_function()` and then crashing the program. This is kinda like an infinite loop, but this one results in us running out of memory and crashing the program. Not great.
 
-So this introduces us to the first key part in any recursive function. The exit strategy. This is also referred to as the "Base Case". How are we going to make sure the function has a stopping point. Consider the following:
+So this introduces us to the first key part in any recursive function. The exit strategy. This is also referred to as the "Base Case". How are we going to make sure the function has a stopping point? Consider the following:
 
-```python
+```python showLineNumbers
 def my_function(a, b):
-    if b == 100:
+    print(a, b)
+    if b == 100: # Base case
         return "Done"
     
-    print(a, b)
     return my_function(a, b + 1)
 
-print(my_function(1, 2))
+print(my_function(1, 1))
 ```
 
 ```bash
@@ -124,10 +132,20 @@ print(my_function(1, 2))
 1 97
 1 98
 1 99
+1 100
 'Done'
 ```
 
-Nice. This time, the stack was able to close because I gave it an exit strategy when `b == 100`. Depending on what you want a recursive function to do, the exit strategy (or more multiple strategies) may be different.
+Nice. This time, the stack was able to close because I gave it an exit strategy.
+
+1. `my_function()` is called 100 times, each with a different value for `b`.
+   - `b` = `1, 2, 3, ..., 99, 100`
+2. The stack grows until it is 100 stack frames large. When `b == 100` the top most frame is able to return because the base case on lines 3 and 4.
+3. Execution then returns to the stack frame with `b == 99` on line 6 and returns.
+4. `b` = `98, 97, 96, ..., 2, 1` follow the same pattern. Popping off the stack on line 6.
+5. Finally the string "Done" makes itself to the main stack frame on line 8 where it is printed to the terminal.
+
+Depending on what you want a recursive function to do, the exit strategy (or more multiple strategies) may be different.
 
 One of the best cases for recursion is when searching a tree-like data structure. Below is an example of such a structure, and then how a recursive function may work to traverse the structure.
 
@@ -370,6 +388,24 @@ print(result)
 
 With great power comes great responsbility. We've only touched on a few of the magic methods in Python. I encourage you to investigate using more of them in your code if it makes sense to do so.
 
+### Task: Dot product
+
+Using the code below, override the `__mul__` magic method so that the tests pass.
+
+1. Override the `__mul__` method to perform the ["dot product"](http://spiff.rit.edu/classes/phys311.old/lectures/dot/dot.html)
+
+```python
+class Vector:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+    
+    # Your code here
+
+assert Vector(4, 8) * Vector(9, -2) == 20
+assert Vector(8, 0) * Vector(3, 6) == 24
+```
+
 ## Iterators
 
 An iterator is a promise. If I ask for something, you'll give me something. If I ask for the next thing, you'll give me the next thing. If you run out of things to give me, tell me, I'll stop.
@@ -496,6 +532,31 @@ for item in reversed(my_list):
 ```
 
 :::
+
+### Task: Alphabet iterator
+
+Create an iterator that will return one letter in the alphabet at a time until all 26 have been exhausted. For example:
+
+```python
+# Your code inside the class
+class Alphabet:
+    def __init__(self):
+        pass
+    
+    def __iter__(self):
+        pass
+    
+    def __next__(self):
+        pass
+
+
+for letter in Alphabet():
+    print(letter, end=" ")
+```
+
+```bash
+a b c d e f g h i j k l m n o p q r s t u v w x y z 
+```
 
 ## Generators
 
@@ -878,13 +939,19 @@ print(names)
 
 ## Performance
 
-There's a few topic to cover under performance, but my main goal here is to highlight a few things that you may want to consider when thinking about or diagnosing performance.
+This will be a very brief overview of performance. It's short because often it doesn't matter and with experience you'll become more familiar with these topics anyway. My main goal here is to highlight a few things that you may want to consider when thinking about or diagnosing performance.
 
-Firstly, Python is a very slow language to run even though it is built upon a much faster language, C. In direct comparisons C would smash Python will an order of magnitude, but what you gain in performance is development time.
+Firstly, Python is a very slow language to run even though it is built upon a much faster language, C. In direct comparisons C would smash Python will an order of magnitude, but what you gain in performance is development time. However, it is much faster to *write* and maintain Python code than C and the extra speed may be irrelevant anyway.
 
-It is much faster to *write* Python code than it is to write C and sometimes the extra speed you get from C is irrelevant. Games are not writing in Python because they are performance critical. But a Python script to pull information from an API that takes 2 seconds is equally acceptable especially if the Python one is easier to modify in the future. That's the first thing I want to preface about performance. That being said, there are way to profile Python code and things to consider if you do want to run things faster in Python.
+Modern games are written in C++ for performance, but business applications are rarely real-time like games. A Python script pulling information from an API that takes 2 seconds is equally acceptable than 0.02s from C. That's the first thing I want to preface about performance in Python.
 
-With that said, some performance critical built-in functions in Python are written directly in C so they are much faster than trying to write it yourself. Consider this when you feel the urge to reinvent the wheel. Don't.
+That being said, there are ways to profile Python code and things to consider if you do want to run things faster in Python.
+
+:::info
+
+Some built-in functions in Python are written directly in C. This means that using built-in functionality is usually faster than trying to write it yourself. Some libraries are also like this. One good example is the [numpy](https://github.com/numpy/numpy) module.
+
+:::
 
 ### Profiling code
 
@@ -912,7 +979,7 @@ There are other libraries that help with profiling like `cProfile` but these are
 
 [Time complexity](https://en.wikipedia.org/wiki/Time_complexity) is a term used to describe how long it takes *at worst* to do some calculation with respect to the size of the input. Here's an example:
 
-```python showLineNumbers
+```python
 n = 1000
 target = 420
 
