@@ -1,4 +1,14 @@
+---
+sidebar_position: 3
+---
+
 # Tron
+
+:::note
+
+Difficulty: ⭐⭐⭐⭐⭐
+
+:::
 
 This challenge will heavily test the skills of using classes and interacting between them. Your task is to make a game where two players face off in a game of [light cycles](https://www.youtube.com/watch?v=SqSuRdkglxM) from Tron.
 
@@ -12,7 +22,7 @@ This is an example of a game:
 
 ```txt
  ----------------------------------------
-|                    o-------------o     |
+|                    --------------o     |
 |                           o---o  |     |
 |                           |   |  |     |
 |                           |   |  |     |
@@ -31,7 +41,7 @@ This is an example of a game:
 |                    |                   |
 |                    |                   |
 |                    |                   |
-|                    o                   |
+|                    |                   |
  ----------------------------------------
 ```
 

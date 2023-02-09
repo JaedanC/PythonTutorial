@@ -1,8 +1,15 @@
 ---
 sidebar_position: 1
+slug: CrosswordSolver
 ---
 
 # Crossword Solver
+
+:::note
+
+Difficulty: ⭐⭐
+
+:::
 
 Write a python program that assists in solving for words in a crossword. This is done by inputing what the known characters are for a word, and then the program will print a list of possible words that could go in that spot. Execution of the program is as follows:
 
