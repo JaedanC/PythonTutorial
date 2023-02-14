@@ -39,3 +39,21 @@ Close the program when the user presses CTRL+C, but don't crash the program.
 ## Details
 
 Make sure that special characters are ignored. And make sure that captilisation is preserved in the output.
+
+## Possible Solution
+
+tab = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']
+test = 'pello WorlD'
+test2=''
+for i in range(len(test)):
+    if test[i] not in tab:
+        test2+=test[i]
+    else:    
+        tmp=test[i].lower()
+        a=tab.index(tmp)+13
+        if a>25:
+            a-=25
+        if test[i].isupper() :
+            test2+=tab[a].upper()
+        else:
+            test2+=tab[a]
