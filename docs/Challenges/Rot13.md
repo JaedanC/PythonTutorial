@@ -23,6 +23,8 @@ To:   nopqrstuvwxyzabcdefghijklm
 
 So when you run the program ask for input with `> ` and then continuously output the encoding of what they type.
 
+Make sure that special characters are ignored. And make sure that captilisation is preserved in the output.
+
 ## Example
 
 ```bash
@@ -33,9 +35,3 @@ Uryyb Jbeyq
 Guvf vf rapbqrq. Ohg jngpu jura V vachg Hello World
 > 
 ```
-
-Close the program when the user presses CTRL+C, but don't crash the program.
-
-## Details
-
-Make sure that special characters are ignored. And make sure that captilisation is preserved in the output.
