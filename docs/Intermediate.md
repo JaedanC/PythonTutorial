@@ -303,7 +303,7 @@ person = {
 
 :::info
 
-Above is an example of a static declartion of a dictionary -> essentially I create a dictionary with stuff inside it already.
+Above is an example of a static declaration of a dictionary -> essentially I create a dictionary with stuff inside it already.
 
 :::
 

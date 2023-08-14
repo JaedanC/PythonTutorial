@@ -1,5 +1,7 @@
 ---
 sidebar_position: 1
+slug: GettingStarted
+
 ---
 
 # Getting Started

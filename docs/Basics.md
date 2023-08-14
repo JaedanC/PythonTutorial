@@ -127,7 +127,7 @@ Next are the Comparison Operators. These allow you to compare two values and ret
 | >        | Is greater than                      |
 | >=       | Is greater than                      |
 
-And finally for now it would be good to become familiar with some boolean operators. These allow you to combine True or False statements in various ways. These are slightly different to the operators above as they are actually english words. This may likely be your first introduction to a *keyword* in Python. Keywords are reserved words that have special meaning.
+And finally for now it would be good to become familiar with some boolean operators. These allow you to combine True and False statements in various ways. These are slightly different to the operators above as they are actually english words. This may likely be your first introduction to a *keyword* in Python. Keywords are reserved words that have special meaning.
 
 | Operator | Description                          |
 | -------- | ------------------------------------ |
@@ -307,6 +307,19 @@ If the task is done correctly then the program will not error when it is run. Th
 
 This challenge makes use of "types" <https://realpython.com/python-data-types/>. Understanding types is a fundamental building block of any programming language.
 
+:::note
+
+The division operator `/` will always return a float even if the answer mathematically is an integer. You can verify this by printing the result and noticing the answer will always have a decimal point.
+
+```python
+print(10 / 2)
+# 5.0
+```
+
+Likewise, this is how you can force a number to be a float. eg. Instead of writing `7`, write `7.0`.
+
+:::
+
 ## If Statements
 
 The most important keyword to know in any programming language. This allow you to control the execution of the program based upon a condition evaluating to True or False.
@@ -336,7 +349,7 @@ Each example is self-explanitory.
 
 ### Elif and Else
 
-Sometimes when working with if statements you want evaluate some conditions if and only if another one fails. This is where the keywords **elif** and **else** come in handy. Let's start with **else**. Else goes after the if statement. If the statement evaluates to False, this code branch will be run instead. For example:
+Sometimes when working with if statements you want evaluate some conditions if and only if another one fails. This is where the keywords `elif` and `else` come in handy. Let's start with else. Else goes after the `if` statement. If the statement evaluates to False, this code branch will be run instead. For example:
 
 ```python
 if 4 < 1: # False
@@ -347,22 +360,24 @@ else:
     print("Maths is saved")
 ```
 
-**Elif** is used *between the if and the else* if we want to evaulate another expression. For example:
+**Elif** is used *between the if and the else* if we want to evaulate another expression only if the condition above fails. We can have multiple `elif` conditions. The first if/elif statement that is True is the code branch that will be run. For example:
 
 ```python
 name = "James"
-if name == "Dave":
-    # This will not be printed
-    print("Dave is a bot")
-elif name == "James":
-    # This will printed
-    print("Genius")
+
+if name == "Dave":          # False
+    print("Not printed")
+elif name == "Sam":         # False
+    print("Not printed")
+elif name == "James":       # True -> run code
+    print("This will be printed")
+elif name == "Tim":         # This condition isn't even evaluated.
+    print("Not printed")
 else:
-    # This will not be printed
-    print("They aight")
+    print("Not printed")
 ```
 
-As you can see if the name input is "James", then only the text "Genius" is printed.
+As you can see if the name input is "James", then only the text "Genius" is printed. Unlike `if` and `else`
 
 ### Task: Favourite Number
 
@@ -398,7 +413,7 @@ Okay
 
 Loops alow you to repeat execution of a certain code block. There are two keywords that can be used to create a loop, **while** and **for**.
 
-- While loops will continue to be run as long as the condition next to the while evaluates to True. This is very powerful and used correctly and drastically reduce the amount of code you need to write.
+- While loops will continue to be run as long as the condition next to the while evaluates to True. This is very powerful, and used correctly, can drastically reduce the amount of code you need to write.
 
     ```python
     fruits = ["apple", "mango", "banana"]
